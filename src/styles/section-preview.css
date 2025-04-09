@@ -1,0 +1,66 @@
+.container-preview {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.link-download {
+  padding: 10px;
+  background-color: #aaa;
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: 0.5s;
+}
+
+.link-download:hover {
+  background-color: #007bff;
+  color: #fff;
+  transition: 0.5s;
+}
+
+.button-preview-mobile {
+  width: 100%;
+  display: none;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  background-color: #ddd;
+}
+
+@media (max-width: 768px) {
+  .container-preview {
+    width: 80%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: 0.5s;
+  }
+
+  .container-preview.active-preview {
+    transform: translateX(0);
+    transition: 0.5s;
+  }
+}
+
+@media (max-width: 425px) {
+  .container-preview {
+    width: 100%;
+  }
+  .link-download {
+    display: none;
+  }
+
+  .button-preview-mobile {
+    display: flex;
+  }
+}

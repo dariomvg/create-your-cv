@@ -1,0 +1,123 @@
+.form-create {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.container-input-create {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.container-input-create label {
+    font-size: 18px;
+    color: #b8b8b8;
+    font-weight: 500;
+}
+.label-date {
+    font-size: 16px;
+}
+.container-input-create input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #191a1e;
+    border: 1px solid transparent;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+}
+
+.container-input-create input:focus {
+    border-color: #007bff;
+}
+.container-input-create input::placeholder {
+    color: #828E9E;
+}
+.button-add {
+    background-color: #007bff;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    padding: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    transition: .5s;
+    margin-bottom: 10px;
+}
+
+.container-input-create ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.item {
+    list-style: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ddd;
+    border: 1px solid #a5a5a5;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-column {
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+}
+
+select {
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    color: #828E9E;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #191a1e;
+
+}
+
+.button-delete {
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 8px;
+    background-color: #f63939;
+}
+
+.button-icon-add {
+    width: 50px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background-color: transparent;
+    padding: 5px;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.button-icon-add:hover {
+    transition: .5s;
+    background-color: #ffffff67;
+    border-color: #ffffff67;
+}
+
+.count-contacts {
+    font-size: 16px;
+    color: #55ff00;
+}
+
