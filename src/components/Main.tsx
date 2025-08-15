@@ -38,6 +38,7 @@ export default function Main() {
         <img
           src={imageMain}
           alt="image template cv"
+          loading="lazy"
           width={400}
           height={550}
           className="image-card-template"
@@ -52,7 +53,7 @@ export default function Main() {
             target="_blank"
             rel="noopener noreferrer"
             className="link-footer">
-            Dariomvg💗
+            Dariomvg✨
           </a>
         </p>
         <p className="copyright-footer">Todos los derechos reservados 2025</p>

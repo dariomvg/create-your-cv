@@ -155,7 +155,7 @@ export const PreviewPDF = ({ cv }: { cv: PropertiesPDF }) => {
                     fontSize: 16,
                   }}>
                   <Text>{name}</Text>
-                  <Text>Level: {level}</Text>
+                  <Text>{level}</Text>
                 </View>
               ))}
             </View>

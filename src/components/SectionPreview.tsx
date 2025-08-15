@@ -1,18 +1,11 @@
 import { Link } from "react-router-dom";
-import iconArrowBack from "../assets/arrow-back.svg";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { pdf } from "@react-pdf/renderer";
 import { PreviewPDF } from "./PreviewPDF";
 import { useContextPDF } from "../context/ContextPDF";
 import "../styles/section-preview.css";
 
-export const SectionPreview = ({
-  active,
-  handlePreview,
-}: {
-  active: boolean;
-  handlePreview: () => void;
-}) => {
+function SectionPreview ()  {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   const { cv } = useContextPDF();
@@ -21,7 +14,7 @@ export const SectionPreview = ({
     const generateBlob = async () => {
       const blob = await pdf(<PreviewPDF cv={cv} />).toBlob();
       const url = URL.createObjectURL(blob);
-      setPdfUrl(url);
+      setPdfUrl(url); 
     };
 
     generateBlob();
@@ -32,14 +25,11 @@ export const SectionPreview = ({
   }, [cv]);
 
   return (
-    <div className={`container-preview ${active ? "active-preview" : ""}`}>
-      <button className="button-preview-mobile" onClick={handlePreview}>
-        <img src={iconArrowBack} alt="icon arrow back" width={20} height={20} />
-        Cerrar vista
-      </button>
+    <div className="container-preview">
       {pdfUrl ? (
-        <iframe
-          src={pdfUrl}
+        <object
+          data={pdfUrl}
+          type="application/pdf"
           style={{ width: "100%", height: "100%", border: "none" }}
         />
       ) : (
@@ -51,3 +41,5 @@ export const SectionPreview = ({
     </div>
   );
 };
+
+export default memo(SectionPreview);

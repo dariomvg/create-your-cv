@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useState } from "react";
 
 import {
   UseContextPDF,
@@ -20,25 +20,27 @@ export const useContextPDF = (): UseContextPDF => {
 export default function ProviderContext({ children }: { children: ReactNode }) {
   const [cv, setCv] = useState<PropertiesPDF>(curriculum);
 
-  const addSkill = (skill: string) => {
+  const addSkill = useCallback((skill: string) => {
     setCv((prevState) => ({
       ...prevState,
       skills: [...prevState.skills, { skill, id: Date.now() }],
     }));
-  };
+  }, []);
 
-  const addContact = (contact: string) => {
-    if (cv.contacts.length >= 4) {
-      return console.log("NO se puede agregar más!!");
-    }
+  const addContact = useCallback((contact: string) => {
+    setCv((prevState) => {
+      if (prevState.contacts.length >= 4) {
+        console.log("Límite alcanzado. Máx 4");
+        return prevState;
+      }
+      return {
+        ...prevState,
+        contacts: [...prevState.contacts, { contact, id: Date.now() }],
+      };
+    });
+  }, []);
 
-    setCv((prevState) => ({
-      ...prevState,
-      contacts: [...prevState.contacts, { contact, id: Date.now() }],
-    }));
-  };
-
-  const addExperience = (value: Experience) => {
+  const addExperience = useCallback((value: Experience) => {
     setCv((prevState) => ({
       ...prevState,
       experiences: [
@@ -46,68 +48,72 @@ export default function ProviderContext({ children }: { children: ReactNode }) {
         { ...value, id: Date.now() },
       ],
     }));
-  };
+  }, []);
 
-  const addEducation = (value: Education) => {
+  const addEducation = useCallback((value: Education) => {
     setCv((prevState) => ({
       ...prevState,
       educations: [...prevState.educations, { ...value, id: Date.now() }],
     }));
-  };
+  }, []);
 
-  const addLenguage = (value: Lenguage) => {
+  const addLenguage = useCallback((value: Lenguage) => {
     setCv((prevState) => ({
       ...prevState,
       lenguages: [...prevState.lenguages, { ...value, id: Date.now() }],
     }));
-  };
+  }, []);
 
-  const addTitle = (value: string) => {
+  const addTitle = useCallback((value: string) => {
     setCv((prevState) => ({ ...prevState, title: value }));
-  };
+  }, []);
 
-  const addSubtitle = (value: string) => {
+  const addSubtitle = useCallback((value: string) => {
     setCv((prevState) => ({ ...prevState, subtitle: value }));
-  };
+  }, []);
 
-  const addResume = (value: string) => {
+  const addResume = useCallback((value: string) => {
     setCv((prevState) => ({ ...prevState, resume: value }));
-  };
+  }, []);
 
-  const removeSkill = (id: number) => {
+  const removeSkill = useCallback((id: number) => {
     setCv((prevState) => ({
       ...prevState,
       skills: prevState.skills.filter((skill) => skill.id !== id),
     }));
-  };
-  const removeContact = (id: number) => {
+  }, []);
+
+  const removeContact = useCallback((id: number) => {
     setCv((prevState) => ({
       ...prevState,
       contacts: prevState.contacts.filter((contact) => contact.id !== id),
     }));
-  };
-  const removeExperience = (id: number) => {
+  }, []);
+
+  const removeExperience = useCallback((id: number) => {
     setCv((prevState) => ({
       ...prevState,
       experiences: prevState.experiences?.filter(
         (experience) => experience.id !== id
       ),
     }));
-  };
-  const removeEducation = (id: number) => {
+  }, []);
+
+  const removeEducation = useCallback((id: number) => {
     setCv((prevState) => ({
       ...prevState,
       educations: prevState.educations.filter(
         (education) => education.id !== id
       ),
     }));
-  };
-  const removeLenguage = (id: number) => {
+  }, []);
+
+  const removeLenguage = useCallback((id: number) => {
     setCv((prevState) => ({
       ...prevState,
       lenguages: prevState.lenguages.filter((lenguage) => lenguage.id !== id),
     }));
-  };
+  }, []);
 
   return (
     <ContextPDF.Provider

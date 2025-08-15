@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useContextPDF } from "../context/ContextPDF";
 import "../styles/form-create.css";
 import {
@@ -6,8 +6,8 @@ import {
   objectExperience,
   objectLenguague,
 } from "../utils/obj_properties";
-import iconAdd from "../assets/add.svg";
 import { Education, Experience, Lenguage } from "../types/types";
+import { ButtonAddForm } from "./ButtonAddForm";
 export const FormCreate = () => {
   const {
     cv,
@@ -26,14 +26,15 @@ export const FormCreate = () => {
     removeLenguage,
   } = useContextPDF();
 
+  const refTitle = useRef<HTMLInputElement>(null);
+  const refJob = useRef<HTMLInputElement>(null);
+  const refContact = useRef<HTMLInputElement>(null);
+  const refResume = useRef<HTMLInputElement>(null);
+  const refSkill = useRef<HTMLInputElement>(null);
+
   const [education, setEducation] = useState<Education>(objectEducation);
   const [experience, setExperience] = useState<Experience>(objectExperience);
   const [lenguage, setLenguage] = useState<Lenguage>(objectLenguague);
-  const [title, setTitle] = useState<string>("");
-  const [subtitle, setSubtitle] = useState<string>("");
-  const [resume, setResume] = useState<string>("");
-  const [skill, setSkill] = useState<string>("");
-  const [contact, setContact] = useState<string>("");
 
   const changeEducation = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,111 +50,109 @@ export const FormCreate = () => {
       <div className="container-input-create">
         <label htmlFor="title">Nombre y Apellido</label>
         <input
-          type="text"
           id="title"
-          value={title}
           required
-          onChange={(e) => setTitle(e.target.value)}
           placeholder="Camila Rodriguez"
+          ref={refTitle}
         />
-        <button
-          className="button-icon-add"
-          onClick={() => {
-            if (!title) return;
-            addTitle(title);
-            setTitle("");
-          }}>
-          <img
-            src={iconAdd}
-            alt="icon plus"
-            width={25}
-            height={25}
-            className="icon-add"
-          />
-        </button>
+        <ButtonAddForm
+          onclick={() => {
+            if (!refTitle.current?.value) return;
+            addTitle(refTitle.current.value);
+            refTitle.current.value = "";
+          }}
+        />
       </div>
 
       <div className="container-input-create">
-        <label htmlFor="subtitle">Profesión</label>
+        <label htmlFor="job">Profesión</label>
         <input
-          type="text"
-          id="subtitle"
+          id="job"
           placeholder="Diseñador UX-UI"
-          value={subtitle}
           required
-          onChange={(e) => setSubtitle(e.target.value)}
+          ref={refJob}
         />
-        <button
-          className="button-icon-add"
-          onClick={() => {
-            if (!subtitle) return;
-            addSubtitle(subtitle);
-            setSubtitle("");
-          }}>
-          <img
-            src={iconAdd}
-            alt="icon plus"
-            width={25}
-            height={25}
-            className="icon-add"
-          />
-        </button>
+        <ButtonAddForm
+          onclick={() => {
+            if (!refJob.current?.value) return;
+            addSubtitle(refJob.current.value);
+            refJob.current.value = "";
+          }}
+        />
       </div>
 
       <div className="container-input-create">
         <label htmlFor="resume">Sobre ti</label>
         <input
-          type="text"
           id="resume"
-          value={resume}
           required
-          onChange={(e) => setResume(e.target.value)}
+          ref={refResume}
           placeholder="Sobre ti..."
         />
-        <button
-          className="button-icon-add"
-          onClick={() => {
-            if (!resume) return;
-            addResume(resume);
-            setResume("");
-          }}>
-          <img
-            src={iconAdd}
-            alt="icon plus"
-            width={25}
-            height={25}
-            className="icon-add"
-          />
-        </button>
+        <ButtonAddForm
+          onclick={() => {
+            if (!refResume.current?.value) return;
+            addResume(refResume.current.value);
+            refResume.current.value = "";
+          }}
+        />
       </div>
       <hr />
       <div className="container-input-create">
         <label htmlFor="contact">
-          Contactos(Máx 4){" "}
+          Contactos(Máx 4)
           <b className="count-contacts"> Agregados {cv.contacts.length}</b>
         </label>
         <input
-          type="text"
           id="contact"
           placeholder="teléfono, e-mail, github, linkedin..."
-          value={contact}
           required
-          onChange={(e) => setContact(e.target.value)}
+          ref={refContact}
         />
-        <button
-          onClick={() => {
-            if (!contact) return;
-
-            addContact(contact);
-            setContact("");
-          }} className="button-add">
-          Agregar
-        </button>
+        <ButtonAddForm
+          onclick={() => {
+            if (!refContact.current?.value) return;
+            addContact(refContact.current.value);
+            refContact.current.value = "";
+          }}
+        />
         <ul>
           {cv.contacts.map(({ id, contact }) => (
             <li className="item" key={id}>
               <p>{contact}</p>
-              <button onClick={() => removeContact(id)} className="button-delete">Eliminar</button>
+              <button
+                onClick={() => removeContact(id)}
+                className="button-delete">
+                Eliminar
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <hr />
+
+      <div className="container-input-create">
+        <label htmlFor="skills">Habilidades</label>
+        <input
+          id="skills"
+          required
+          placeholder="React, JavaScript, TypeScript..."
+          ref={refSkill}
+        />
+        <ButtonAddForm
+          onclick={() => {
+            if (!refSkill.current?.value) return;
+            addSkill(refSkill.current.value);
+            refSkill.current.value = "";
+          }}
+        />
+        <ul>
+          {cv.skills.map(({ id, skill }) => (
+            <li className="item" key={id}>
+              <p>{skill}</p>
+              <button onClick={() => removeSkill(id)} className="button-delete">
+                Eliminar
+              </button>
             </li>
           ))}
         </ul>
@@ -162,7 +161,6 @@ export const FormCreate = () => {
       <div className="container-input-create">
         <label>Experiencia</label>
         <input
-          type="text"
           placeholder="Puesto de trabajo. Por ej: Desarrollador"
           value={experience.name}
           name="name"
@@ -170,7 +168,6 @@ export const FormCreate = () => {
           onChange={changeExperience}
         />
         <input
-          type="text"
           placeholder="Tus logros, aprendizajes, detalles..."
           value={experience.detail}
           name="detail"
@@ -178,7 +175,6 @@ export const FormCreate = () => {
           onChange={changeExperience}
         />
         <input
-          type="text"
           placeholder="Nombre de la empresa, institución, organización..m"
           value={experience.company}
           name="company"
@@ -211,11 +207,10 @@ export const FormCreate = () => {
         />
         <button
           onClick={() => {
-            if (!experience) return;
-
             addExperience(experience);
             setExperience(objectExperience);
-          }} className="button-add">
+          }}
+          className="button-add">
           Agregar
         </button>
         <ul>
@@ -226,48 +221,21 @@ export const FormCreate = () => {
                 {date_start} - {date_end}
               </strong>
               <p>{detail}</p>
-              <button onClick={() => removeExperience(id)} className="button-delete">Eliminar</button>
+              <button
+                onClick={() => removeExperience(id)}
+                className="button-delete">
+                Eliminar
+              </button>
             </li>
           ))}
         </ul>
       </div>
 
-      <hr />
-
-      <div className="container-input-create">
-        <label htmlFor="skills">Habilidades</label>
-        <input
-          type="text"
-          id="skills"
-          required
-          placeholder="React, JavaScript, TypeScript..."
-          value={skill}
-          onChange={(e) => setSkill(e.target.value)}
-        />
-        <button
-          onClick={() => {
-            if (!skill) return;
-
-            addSkill(skill);
-            setSkill("");
-          }} className="button-add">
-          Agregar
-        </button>
-        <ul>
-          {cv.skills.map(({ id, skill }) => (
-            <li className="item" key={id}>
-              <p>{skill}</p>
-              <button onClick={() => removeSkill(id)} className="button-delete">Eliminar</button>
-            </li>
-          ))}
-        </ul>
-      </div>
       <hr />
 
       <div className="container-input-create">
         <label htmlFor="name">Educación</label>
         <input
-          type="text"
           placeholder="Nombre del curso o título"
           name="name"
           id="name"
@@ -302,7 +270,6 @@ export const FormCreate = () => {
         />
         <button
           onClick={() => {
-            if (!education) return;
             addEducation(education);
             setEducation(objectEducation);
           }}
@@ -316,7 +283,11 @@ export const FormCreate = () => {
               <strong>
                 {date_start} - {date_end}
               </strong>
-              <button onClick={() => removeEducation(id)}className="button-delete" >Eliminar</button>
+              <button
+                onClick={() => removeEducation(id)}
+                className="button-delete">
+                Eliminar
+              </button>
             </li>
           ))}
         </ul>
@@ -325,7 +296,6 @@ export const FormCreate = () => {
       <div className="container-input-create">
         <label htmlFor="">Idiomas</label>
         <input
-          type="text"
           placeholder="Inglés, Español, Italiano..."
           name="name"
           required
@@ -348,12 +318,10 @@ export const FormCreate = () => {
         </select>
         <button
           onClick={() => {
-            if (!lenguage) return;
             addLenguage(lenguage);
             setLenguage(objectLenguague);
           }}
-          className="button-add"
-          >
+          className="button-add">
           Agregar
         </button>
         <ul>
@@ -361,7 +329,11 @@ export const FormCreate = () => {
             <li className="item" key={id}>
               <h4>{name}</h4>
               <strong>{level}</strong>
-              <button onClick={() => removeLenguage(id)} className="button-delete">Eliminar</button>
+              <button
+                onClick={() => removeLenguage(id)}
+                className="button-delete">
+                Eliminar
+              </button>
             </li>
           ))}
         </ul>

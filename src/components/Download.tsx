@@ -10,7 +10,7 @@ export const Download = () => {
 
       <PDFDownloadLink
         document={<PreviewPDF cv={cv} />}
-        fileName="mi_cv.pdf"
+        fileName="create-your-cv.pdf"
         className="button-download">
         {({ loading }) =>
           loading ? "Generando PDF..." : "Descargar currículum"
